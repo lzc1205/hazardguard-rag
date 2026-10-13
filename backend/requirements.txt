@@ -1,0 +1,74 @@
+# HazardGuard-RAG 后端依赖
+#
+# 版本约束必须与 .venv 中实际安装的一致，否则每次 pip install 都会
+# 因版本冲突重新解析依赖（实测卡住数分钟）。
+# 重新安装前请先确认实际版本，或用不带版本上限的声明。
+#
+# 说明：本项目用字符 n-gram Embedding 替代 BGE-M3（磁盘受限），
+# 因此不需要 torch / sentence-transformers / chromadb。
+
+# --- Web 框架 ---
+fastapi>=0.143.0
+uvicorn[standard]>=0.54.0
+python-multipart>=0.0.9
+
+# --- 数据库 ---
+SQLAlchemy[asyncio]>=2.1.4
+alembic>=1.20.0
+asyncpg>=0.29.0
+psycopg[binary]>=3.3.6
+psycopg2-binary>=2.9.9
+# 提供 VECTOR(512) 列类型的 SQLAlchemy 映射（models/knowledge.py 里
+# `from pgvector.sqlalchemy import Vector`）。
+# **曾漏掉这个依赖**：本地 venv 里恰好装过所以无感，
+# 但容器里按 requirements 全新安装时会 ModuleNotFoundError，
+# 服务根本起不来。数据库驱动装了不等于类型映射装了。
+pgvector>=0.3.6
+
+# --- 配置与校验 ---
+pydantic>=2.14.0
+pydantic-settings>=2.1.0
+
+# --- 鉴权 ---
+# 注意：passlib 1.7.4 与 bcrypt 5.x 不兼容（会抛
+# "password cannot be longer than 72 bytes"），代码已改用原生
+# bcrypt API，此处保留 bcrypt 显式声明。
+python-jose[cryptography]>=3.5.0
+passlib>=1.7.4
+bcrypt>=5.0.0
+
+# --- 缓存与任务队列 ---
+redis>=8.1.0
+celery>=5.6.0
+
+# --- 检索层 ---
+numpy>=2.5.3
+
+# --- 文档解析 ---
+pypdf>=6.20.0
+pdfplumber>=0.11.10
+python-docx>=1.2.0
+openpyxl>=3.1.0
+
+# --- 多智能体与 MCP ---
+langgraph>=1.2.14
+langchain>=0.3.0
+langchain-core>=0.3.0
+mcp>=2.3.0
+
+# --- 工具 ---
+httpx>=0.28.1
+loguru>=0.7.3
+
+# --- 测试 ---
+pytest>=8.0.0
+
+# --- Prompt 工程与测试 ---
+pytest-asyncio>=1.4.0
+
+# --- PDF 报告生成 ---
+reportlab>=4.0.0
+
+# --- 异步任务 ---
+celery>=5.3.0
+redis>=5.0.0

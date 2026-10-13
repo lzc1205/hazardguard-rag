@@ -1,0 +1,48 @@
+# ---------------------------------------------------------------------------
+# 必须排除：.env 里存着真实的 LLM_API_KEY
+# 「COPY . .」会把这里没列出的文件全打进镜像，
+# 镜像一旦被推送或分享，密钥就跟着泄出去了。
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+
+# Python 虚拟环境与缓存（几百 MB，且宿主机路径在容器内无效）
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# 运行期产物
+.run/
+*.pid
+*.log
+logs/
+data/uploads/
+data/reports/
+data/chroma/
+backend/data/
+
+# 数据库
+*.sqlite
+*.sqlite3
+*.db
+
+# 版本控制与 IDE
+.git/
+.gitignore
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# 前端产物（后端镜像里完全不需要）
+node_modules/
+dist/

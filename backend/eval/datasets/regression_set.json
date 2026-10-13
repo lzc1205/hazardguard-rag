@@ -1,0 +1,337 @@
+{
+  "meta": {
+    "name": "HazardGuard 回归评测集",
+    "version": "1.0",
+    "description": "基于住建部令第37号《危险性较大的分部分项工程安全管理条例》与建筑施工行业标准(JGJ/GB)实际条文构建",
+    "case_count": 24,
+    "categories": {
+      "foundation_pit": 4,
+      "formwork": 5,
+      "lifting": 3,
+      "scaffold": 4,
+      "demolition": 3,
+      "underground": 2,
+      "other": 3
+    },
+    "difficulty_dist": {
+      "direct": 8,
+      "semantic": 8,
+      "cross_ref": 5,
+      "adversarial": 3
+    },
+    "note": "条文内容依据公开规范整理，用于检索召回评测，不作为审查结论的唯一依据",
+    "clause_numbering": "官方附件编号（建办质〔2018〕31号附件1/附件2）；JGJ 系列仍为标准原编号，待补齐对应标准原文后统一",
+    "label_fix": "2026-10-13 修正：删除来源不明/自造编号条目，按 gov.cn 原文校正 37 号令第11/12/13条编号错位，同步更新期望值"
+  },
+  "cases": [
+    {
+      "case_id": "fp_001",
+      "question": "基坑工程开挖深度达到多少米属于危大工程？超过多少米属于超规模？",
+      "category": "foundation_pit",
+      "expect_answer": "开挖深度3m及以上的基坑(不含软岩土层中的微型基坑)属于危大工程；开挖深度5m及以上的基坑属于超过一定规模。",
+      "expect_clauses": [
+        "附件1-基坑工程（一）",
+        "附件2-深基坑工程",
+        "JGJ 120-2012 第3.1.3条"
+      ],
+      "expect_risk": "high",
+      "difficulty": "cross_ref",
+      "note": "同时考察危大判定与超规模判定，需区分两个阈值"
+    },
+    {
+      "case_id": "fp_002",
+      "question": "深基坑工程一般指开挖深度多少米以上？",
+      "category": "foundation_pit",
+      "expect_answer": "开挖深度5m及以上的基坑工程通常称为深基坑，同时属于超过一定规模的危大工程。",
+      "expect_clauses": [
+        "附件2-深基坑工程"
+      ],
+      "expect_risk": "high",
+      "difficulty": "semantic",
+      "note": "口语化提问，书面上写的是超规模阈值5m"
+    },
+    {
+      "case_id": "fp_003",
+      "question": "基坑边坡支护结构的形式选择依据是什么？",
+      "category": "foundation_pit",
+      "expect_answer": "应根据基坑等级、支护结构破坏后果、支护结构安全等级等综合确定；安全等级分为一级、二级、三级。",
+      "expect_clauses": [
+        "JGJ 120-2012 第3.1.2条"
+      ],
+      "expect_risk": "medium",
+      "difficulty": "semantic",
+      "note": "考察语义召回，非精确条款"
+    },
+    {
+      "case_id": "fp_004",
+      "question": "基坑工程监测哪些内容？监测频率如何确定？",
+      "category": "foundation_pit",
+      "expect_answer": "监测内容包括支护结构顶部水平位移与竖向位移、深层水平位移、支撑轴力或锚杆拉力、地下水位、周边地表沉降等；监测频率应根据开挖工况、支护结构安全等级确定，一级基坑不低于每日一次。",
+      "expect_clauses": [
+        "JGJ 120-2012 第8章"
+      ],
+      "expect_risk": "medium",
+      "difficulty": "cross_ref",
+      "note": "跨章节综合题"
+    },
+    {
+      "case_id": "fm_001",
+      "question": "模板支撑立杆的纵横向间距最大不应超过多少？",
+      "category": "formwork",
+      "expect_answer": "模板支撑立杆的纵横向间距不应大于900mm。",
+      "expect_clauses": [
+        "JGJ 80-2016 第4.2.1条"
+      ],
+      "expect_risk": "high",
+      "difficulty": "direct",
+      "note": "最典型的精确数值条款题"
+    },
+    {
+      "case_id": "fm_002",
+      "question": "高度超过多少米的模板支撑架需要设置水平剪刀撑？",
+      "category": "formwork",
+      "expect_answer": "模板支撑立杆高度超过4m时，应在顶部和底部设置水平剪刀撑。",
+      "expect_clauses": [
+        "JGJ 80-2016 第4.2.2条"
+      ],
+      "expect_risk": "high",
+      "difficulty": "direct"
+    },
+    {
+      "case_id": "fm_003",
+      "question": "模板工程在什么情况下属于超过一定规模的危大工程？",
+      "category": "formwork",
+      "expect_answer": "各类工具式模板工程搭设高度5m及以上，或搭设跨度10m及以上，或施工总荷载(设计值)10kN/m2及以上，或集中线荷载(设计值)15kN/m及以上；混凝土模板支撑工程搭设高度8m及以上。",
+      "expect_clauses": [
+        "附件2-模板工程及支撑体系（二）"
+      ],
+      "expect_risk": "high",
+      "difficulty": "cross_ref",
+      "note": "包含4个并列数值条件，是超规模判定的核心条款"
+    },
+    {
+      "case_id": "fm_004",
+      "question": "模板支架立杆底部必须设置什么？",
+      "category": "formwork",
+      "expect_answer": "立杆底部应设置底座和通长水平扫地杆；支撑高度4m及以上的支撑体系应设置竖向剪刀撑。",
+      "expect_clauses": [
+        "JGJ 80-2016 第6.3.2条"
+      ],
+      "expect_risk": "medium",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "fm_005",
+      "question": "模板拆除时对混凝土强度有什么要求？",
+      "category": "formwork",
+      "expect_answer": "底模及支架拆除时的混凝土强度应符合设计要求；设计无要求时，应符合规范规定的强度等级要求。侧模拆除时混凝土强度应能保证其表面及棱角不受损伤。",
+      "expect_clauses": [
+        "JGJ 80-2016 第7.3.2条"
+      ],
+      "expect_risk": "high",
+      "difficulty": "semantic",
+      "note": "考察是否能召回强度条款而非泛泛的拆除要求"
+    },
+    {
+      "case_id": "lf_001",
+      "question": "起重吊装工程中单件起吊重量达到多少属于危大工程？",
+      "category": "lifting",
+      "expect_answer": "采用非常规起重设备、方法，且单件起吊重量在10kN及以上或采用起重机械进行安装的起重吊装工程属于危大工程。",
+      "expect_clauses": [
+        "附件1-起重吊装及起重机械安装拆卸工程（一）"
+      ],
+      "expect_risk": "high",
+      "difficulty": "direct"
+    },
+    {
+      "case_id": "lf_002",
+      "question": "起重量300kN及以上的起重设备安装属于什么规模？",
+      "category": "lifting",
+      "expect_answer": "起重量300kN及以上的起重设备安装工程属于超过一定规模的危大工程。",
+      "expect_clauses": [
+        "附件2-起重吊装及起重机械安装拆卸工程（二）"
+      ],
+      "expect_risk": "high",
+      "difficulty": "direct"
+    },
+    {
+      "case_id": "lf_003",
+      "question": "起重吊装作业前需要检查哪些内容？",
+      "category": "lifting",
+      "expect_answer": "作业前应检查起重机械、吊索具、吊点等是否符合要求，吊索具不得有磨损、变形等缺陷，作业人员应持证上岗。",
+      "expect_clauses": [
+        "JGJ 276-2012 第4章"
+      ],
+      "expect_risk": "medium",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "sc_001",
+      "question": "高度多少米及以上的落地式钢管脚手架属于危大工程？",
+      "category": "scaffold",
+      "expect_answer": "搭设高度24m及以上的落地式钢管脚手架工程属于危大工程；高度50m及以上，或搭设高度8m及以上且跨度18m及以上的落地式钢管脚手架属于超过一定规模。",
+      "expect_clauses": [
+        "附件1-脚手架工程（一）"
+      ],
+      "expect_risk": "high",
+      "difficulty": "cross_ref"
+    },
+    {
+      "case_id": "sc_002",
+      "question": "脚手架连墙件的数量和间距有什么要求？",
+      "category": "scaffold",
+      "expect_answer": "脚手架必须按规定设置连墙件，连墙件应设置在主节点处，宜靠近主节点设置，偏离主节点的距离不应大于300mm；开口处应设置必要的连墙件。",
+      "expect_clauses": [
+        "JGJ 130-2011 第6.4.2条"
+      ],
+      "expect_risk": "high",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "sc_003",
+      "question": "悬挑式脚手架的悬挑梁锚固长度要求是多少？",
+      "category": "scaffold",
+      "expect_answer": "悬挑梁锚固长度不应小于悬挑梁长度的1.5倍，锚固点应设置在结构楼板上，并应按设计要求设置。",
+      "expect_clauses": [
+        "JGJ 130-2011 第6.6.3条"
+      ],
+      "expect_risk": "critical",
+      "difficulty": "direct",
+      "note": "锚固不足会导致倾覆，是 critical 级问题"
+    },
+    {
+      "case_id": "sc_004",
+      "question": "脚手架搭设完成后验收需要检查哪些项目？",
+      "category": "scaffold",
+      "expect_answer": "验收应检查连墙件、剪刀撑、扫地杆等是否按规范设置，架体是否稳固，无变形、无倾覆，荷载试验符合要求。",
+      "expect_clauses": [
+        "JGJ 130-2011 第8.2.1条"
+      ],
+      "expect_risk": "medium",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "dc_001",
+      "question": "爆破工程中需要专家论证的规模标准是什么？",
+      "category": "demolition",
+      "expect_answer": "可能影响行人、交通、电力设施、通讯设施或其他建(构)筑物安全的拆除工程，以及文物保护建筑、优秀历史建筑或历史文化风貌区影响范围内的拆除工程属于超规模危大工程。",
+      "expect_clauses": [
+        "附件2-拆除工程（一）"
+      ],
+      "expect_risk": "high",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "dc_002",
+      "question": "拆除工程对爆破作业有什么资质要求？",
+      "category": "demolition",
+      "expect_answer": "爆破工程应由具备相应资质的单位承担，作业人员应持爆破作业人员许可证，并按爆破作业安全规程组织施工。",
+      "expect_clauses": [
+        "附件1-拆除工程"
+      ],
+      "expect_risk": "critical",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "dc_003",
+      "question": "拆除作业前需要做哪些准备工作？",
+      "category": "demolition",
+      "expect_answer": "拆除工程应编制专项拆除方案，作业前应做好建筑结构、周边环境、管线等的调查与记录，并落实安全防护措施。",
+      "expect_clauses": [
+        "附件1-拆除工程"
+      ],
+      "expect_risk": "medium",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "ud_001",
+      "question": "暗挖工程采用矿山法施工的适用范围是什么？",
+      "category": "underground",
+      "expect_answer": "采用矿山法、盾构法、顶管法施工的隧道、洞室工程属于危大工程；采用矿山法的软弱围岩或不良地质隧道属于超规模。",
+      "expect_clauses": [
+        "附件1-暗挖工程"
+      ],
+      "expect_risk": "high",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "ud_002",
+      "question": "暗挖工程需要专家论证的情形有哪些？",
+      "category": "underground",
+      "expect_answer": "采用矿山法施工的隧道、洞室工程中，围岩等级为Ⅴ级的软弱围岩或不良地质隧道属于超过一定规模。",
+      "expect_clauses": [
+        "附件2-暗挖工程"
+      ],
+      "expect_risk": "high",
+      "difficulty": "direct"
+    },
+    {
+      "case_id": "ot_001",
+      "question": "危大工程专项施工方案由谁审核签字？需要哪些人员签字？",
+      "category": "other",
+      "expect_answer": "专项施工方案应由施工单位技术负责人审核签字、加盖单位公章，并由总监理工程师审查签字、加盖执业印章后方可实施。实行分包的分包单位编制方案时，应由总承包单位和分包单位技术负责人共同签字。",
+      "expect_clauses": [
+        "第11条"
+      ],
+      "expect_risk": "critical",
+      "difficulty": "semantic",
+      "note": "审批程序类问题，严重程度高"
+    },
+    {
+      "case_id": "ot_002",
+      "question": "超规模危大工程的专家论证有哪些要求？",
+      "category": "other",
+      "expect_answer": "应由施工总承包单位组织召开专家论证会论证，专家从专家库中选取且不少于5名，本项目参建各方人员不得以专家身份参加，论证报告结论分为通过、修改后通过、不通过。",
+      "expect_clauses": [
+        "第13条"
+      ],
+      "expect_risk": "critical",
+      "difficulty": "semantic"
+    },
+    {
+      "case_id": "ot_003",
+      "question": "危大工程专项施工方案应当包含哪些主要内容？",
+      "category": "other",
+      "expect_answer": "专项施工方案应包括工程概况、编制依据、施工计划、施工工艺技术、施工安全保证措施、施工管理及作业人员配备和分工、验收要求、应急处置措施、计算书及相关施工图纸。",
+      "expect_clauses": [
+        "第11条"
+      ],
+      "expect_risk": "high",
+      "difficulty": "cross_ref",
+      "note": "对应 37 号令第十一条的 9 项必备内容，可用于方案完整性审查"
+    },
+    {
+      "case_id": "adv_001",
+      "question": "食堂饭菜的营养搭配应该怎么设计比较合理？",
+      "category": "other",
+      "expect_answer": "",
+      "expect_clauses": [],
+      "expect_risk": "compliant",
+      "difficulty": "adversarial",
+      "should_refuse": true,
+      "note": "完全无关问题，期望系统拒答。用于验证拒答机制不误触发。"
+    },
+    {
+      "case_id": "adv_002",
+      "question": "请问混凝土的配合比设计方法是什么？",
+      "category": "other",
+      "expect_answer": "",
+      "expect_clauses": [],
+      "expect_risk": "compliant",
+      "difficulty": "adversarial",
+      "should_refuse": true,
+      "note": "与工程相关但不属于危大工程审查范畴，属边界外问题，期望拒答或明确说明不适用。"
+    },
+    {
+      "case_id": "adv_003",
+      "question": "你叫什么名字？能帮我写一份施工组织设计吗？",
+      "category": "other",
+      "expect_answer": "",
+      "expect_clauses": [],
+      "expect_risk": "compliant",
+      "difficulty": "adversarial",
+      "should_refuse": true,
+      "note": "诱导性 + 任务越界问题，期望系统明确说明能力边界。"
+    }
+  ]
+}

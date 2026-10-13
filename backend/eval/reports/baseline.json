@@ -1,0 +1,96 @@
+{
+  "total": 27,
+  "metrics": {
+    "recall_at_5": 0.9444444444444445,
+    "hit_rate": 0.9583333333333334,
+    "mrr": 0.8402777777777778,
+    "citation_accuracy": 1.0,
+    "refusal_accuracy": 1.0,
+    "false_refusal_rate": 0.0
+  },
+  "by_category": {
+    "foundation_pit": {
+      "count": 4,
+      "recall_at_5": 0.9166666666666666,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "formwork": {
+      "count": 5,
+      "recall_at_5": 1.0,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "lifting": {
+      "count": 3,
+      "recall_at_5": 1.0,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "scaffold": {
+      "count": 4,
+      "recall_at_5": 1.0,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "demolition": {
+      "count": 3,
+      "recall_at_5": 1.0,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "underground": {
+      "count": 2,
+      "recall_at_5": 1.0,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "other": {
+      "count": 3,
+      "recall_at_5": 0.6666666666666666,
+      "hit_rate": 0.6666666666666666,
+      "refusal_accuracy": 1.0
+    }
+  },
+  "by_difficulty": {
+    "cross_ref": {
+      "count": 5,
+      "recall_at_5": 0.9333333333333333,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    },
+    "semantic": {
+      "count": 13,
+      "recall_at_5": 0.9230769230769231,
+      "hit_rate": 0.9230769230769231,
+      "refusal_accuracy": 1.0
+    },
+    "direct": {
+      "count": 6,
+      "recall_at_5": 1.0,
+      "hit_rate": 1.0,
+      "refusal_accuracy": 1.0
+    }
+  },
+  "failures": [
+    {
+      "case_id": "ot_002",
+      "category": "other",
+      "difficulty": "semantic",
+      "reason": "检索未命中（Recall@5=0%）"
+    }
+  ],
+  "duration_sec": 0.02,
+  "baseline_note": {
+    "measured_at": "2026-10-13",
+    "knowledge_entries": 54,
+    "data_cleaning": "删除 14 条错标/来源不明/自造编号条目，按 gov.cn 原文校正 37 号令第11/12/13条",
+    "why_changed": "Recall 91.67%→94.44%、MRR 72.01%→84.03% 的提升全部来自修正数据错误（错标规范、编号错位、分块器丢弃短条款），而非调参。旧基线对应的数据本身是错的。",
+    "remaining_gap": "仍有 1 例未召回。已定位为真实检索局限：37 号令程序性条款正文不含业务关键词，字符检索难以进入 Top3。彻底解决需引入语义检索或重排序模型。",
+    "targets_not_met": [
+      "recall_at_5 94.44% < 95%",
+      "hit_rate 95.83% < 98%",
+      "mrr 84.03% < 90%"
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+# HazardGuard-RAG 一键部署
+#
+#   cp backend/.env.example backend/.env   # 填入 LLM_API_KEY
+#   docker compose up -d --build
+#   打开 http://localhost:3000
+#
+# 不写 version 字段：Compose V2 已废弃，写了会有警告。
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: hazardguard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hazardguard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: hazardguard-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hazardguard-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/hazardguard
+      REDIS_URL: redis://redis:6379/0
+      # LLM 配置优先读根目录 .env（Compose 只会解析那一份），
+      # 回退到 backend/.env 里的值。两者都没配时降级为规则模式，
+      # 功能仍可用但说理质量下降。
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.deepseek.com/v1}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-deepseek-chat}
+      # 实际使用的向量化方案：字符 n-gram（零依赖、离线可用）
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-char}
+      EMBEDDING_DIMENSION: ${EMBEDDING_DIMENSION:-512}
+      DEFAULT_ADMIN_USERNAME: ${DEFAULT_ADMIN_USERNAME:-admin}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-admin123}
+    ports:
+      - "8000:8000"
+    volumes:
+      # 整个 backend 挂到 /app，其中已包含 .env——
+      # 所以容器内 Settings 能读到 LLM_API_KEY，无需单独挂载。
+      - ./backend:/app
+      - upload_data:/app/data/uploads
+    # 迁移 → 初始化（建表/管理员/法规种子/向量）→ 启动服务。
+    # 少了 init_db 这步，别人部署后数据库里没有用户，登录页直接卡住。
+    command: >-
+      sh -c "alembic upgrade head
+      && python scripts/init_db.py
+      && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --reload"
+
+  # Celery Worker：异步审查任务执行器。
+  # 缺了它，同步审查仍可用，但「异步模式」提交的任务会永远卡在 pending。
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hazardguard-worker
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/hazardguard
+      REDIS_URL: redis://redis:6379/0
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.deepseek.com/v1}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-deepseek-chat}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-char}
+      EMBEDDING_DIMENSION: ${EMBEDDING_DIMENSION:-512}
+    volumes:
+      - ./backend:/app
+      - upload_data:/app/data/uploads
+    # include 必须显式指定，否则 worker 起来但没注册任务。
+    # 容器是 Linux，可用 prefork 并发；Windows 本地启动要用 --pool=solo
+    # （prefork 在 Windows 上会因 signal 处理失败而崩溃）。
+    command: >-
+      celery -A app.celery_app.celery_app worker
+      --loglevel=info
+      --pool=prefork
+      --concurrency=2
+      -Q celery
+      --include=app.tasks.review_tasks
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hazardguard-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  postgres_data:
+  redis_data:
+  upload_data:

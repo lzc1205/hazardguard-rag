@@ -1,0 +1,29 @@
+[project]
+name = "hazardguard-rag"
+version = "1.0.0"
+description = "Hazardous Engineering Compliance Review RAG Multi-Agent System"
+requires-python = ">=3.12"
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.pytest.ini_options]
+markers = [
+    "eval: 评测框架相关用例（pytest -m eval）",
+    "regression: 回归检测用例，指标不达标则 CI 失败（pytest -m regression）",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+# auto 模式：pytest-asyncio 自动接管所有 async 测试与 async 夹具，
+# 不必每个用例都加 @pytest.mark.asyncio 装饰器。
+# 必须开这个，否则「sync 夹具 → async 夹具 → async 测试」的依赖链
+# 会报 "requested an async fixture, with no plugin or hook that handled it"。
+asyncio_mode = "auto"
