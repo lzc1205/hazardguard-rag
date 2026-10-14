@@ -1,5 +1,11 @@
 # HazardGuard
 
+[![CI](https://github.com/lzc1205/hazardguard-rag/actions/workflows/ci.yml/badge.svg)](https://github.com/lzc1205/hazardguard-rag/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/Docker-✓-2496ED.svg)](https://www.docker.com/)
+
 > 危大工程专项方案合规审查系统 —— 基于 RAG 的多智能体 Agent
 >
 > 上传专项施工方案，系统自动完成「方案识别 → 多维度审查 → 出具可溯源审查报告」全流程，

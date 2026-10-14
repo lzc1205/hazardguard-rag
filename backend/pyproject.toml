@@ -1,8 +1,36 @@
 [project]
 name = "hazardguard-rag"
 version = "1.0.0"
-description = "Hazardous Engineering Compliance Review RAG Multi-Agent System"
+description = "危大工程专项方案合规审查系统 —— 基于 RAG 的多智能体 Agent"
+readme = "../README.md"
+license = {text = "MIT"}
 requires-python = ">=3.12"
+keywords = [
+    "rag",
+    "llm",
+    "multi-agent",
+    "compliance-review",
+    "engineering",
+    "construction",
+    "fastapi",
+    "langchain",
+    "pgvector",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Framework :: FastAPI",
+]
+
+[project.urls]
+Homepage = "https://github.com/lzc1205/hazardguard-rag"
+Issues = "https://github.com/lzc1205/hazardguard-rag/issues"
 
 [build-system]
 requires = ["setuptools>=68.0"]
