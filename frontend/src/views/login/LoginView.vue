@@ -26,6 +26,14 @@
             Login
           </el-button>
         </el-form-item>
+        <el-form-item>
+          <el-alert type="info" :closable="false" class="demo-hint">
+            <template #title>
+              演示账号：<code>admin</code> / <code>admin123</code>
+              <span class="demo-note">（本地种子数据，公网部署前请务必修改）</span>
+            </template>
+          </el-alert>
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -43,9 +51,10 @@ const userStore = useUserStore();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
+// 不在源码中硬编码任何凭据；演示账号见页面提示与 README
 const loginForm = reactive({
-  username: "admin",
-  password: "admin123",
+  username: "",
+  password: "",
 });
 
 const rules: FormRules = {
@@ -94,5 +103,21 @@ async function handleLogin() {
 }
 .login-btn {
   width: 100%;
+}
+.demo-hint {
+  margin-top: 4px;
+}
+.demo-hint :deep(.el-alert__title) {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.demo-hint code {
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+.demo-note {
+  opacity: 0.7;
 }
 </style>
